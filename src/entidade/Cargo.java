@@ -1,10 +1,8 @@
 package entidade;
 
 public class Cargo {
-	 // variável destinado ao id do cargo
     private int id; 
-    // variável destinado ao nome do cargo
-    private String nome;
+    private String name;
 
     public int getId() {
         return id;
@@ -14,17 +12,12 @@ public class Cargo {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
-    
-    @Override
-    public String toString() {
-        return this.nome;
-    }    
-
+     
 }

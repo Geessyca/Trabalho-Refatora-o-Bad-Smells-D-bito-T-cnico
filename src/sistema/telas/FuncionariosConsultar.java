@@ -19,158 +19,136 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import sistema.BancoDeDados;
+import conectividade.Main;
+import sistema.Validador;
 import sistema.Navegador;
 import entidade.Funcionario;
 
 public class FuncionariosConsultar extends JPanel {
     
-    Funcionario funcionarioAtual;
-    JLabel labelTitulo, labelFuncionario;
-    JTextField campoFuncionario;
-    JButton botaoPesquisar, botaoEditar, botaoExcluir;
-    DefaultListModel<Funcionario> listasFuncionariosModelo = new DefaultListModel();
-    JList<Funcionario> listaFuncionarios;
-            
+    Funcionario currentEmployee;
+    JLabel labelTitle, labelEmployee;
+    JTextField fieldEmployee;
+    JButton buttonSearch, buttonEdit, buttonDelete;
+    DefaultListModel<Funcionario> employeeListModel = new DefaultListModel();
+    JList<Funcionario> employeeList;
+     	Main connected = new Main();       
     public FuncionariosConsultar(){
-        criarComponentes();
-        criarEventos();
-        Navegador.habilitarMenu();
+        createComponents();
+        createEvents();
+        Navegador.enableMenu();
     }
 
-    private void criarComponentes() {
+    private void createComponents() {
         setLayout(null);
         
-        labelTitulo = new JLabel("Consulta de Funcionarios", JLabel.CENTER);
-        labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.PLAIN, 20));      
-        labelFuncionario = new JLabel("Nome do funcionario", JLabel.LEFT);
-        campoFuncionario = new JTextField();
-        botaoPesquisar = new JButton("Pesquisar Funcionario");
-        botaoEditar = new JButton("Editar Funcionario");
-        botaoEditar.setEnabled(false);
-        botaoExcluir = new JButton("Excluir Funcionario");
-        botaoExcluir.setEnabled(false);
-        listasFuncionariosModelo = new DefaultListModel();
-        listaFuncionarios = new JList();
-        listaFuncionarios.setModel(listasFuncionariosModelo);
-        listaFuncionarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        labelTitle = new JLabel("Consulta de Funcionarios", JLabel.CENTER);
+        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.PLAIN, 20));      
+        labelEmployee = new JLabel("Nome do employee", JLabel.LEFT);
+        fieldEmployee = new JTextField();
+        buttonSearch = new JButton("Pesquisar Funcionario");
+        buttonEdit = new JButton("Editar Funcionario");
+        buttonEdit.setEnabled(false);
+        buttonDelete = new JButton("Excluir Funcionario");
+        buttonDelete.setEnabled(false);
+        employeeListModel = new DefaultListModel();
+        employeeList = new JList();
+        employeeList.setModel(employeeListModel);
+        employeeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         
         
-        labelTitulo.setBounds(20, 20, 660, 40);
-        labelFuncionario.setBounds(150, 120, 400, 20);
-        campoFuncionario.setBounds(150, 140, 400, 40);
-        botaoPesquisar.setBounds(560, 140, 130, 40); 
-        listaFuncionarios.setBounds(150, 200, 400, 240);
-        botaoEditar.setBounds(560, 360, 130, 40); 
-        botaoExcluir.setBounds(560, 400, 130, 40);
+        labelTitle.setBounds(20, 20, 660, 40);
+        labelEmployee.setBounds(150, 120, 400, 20);
+        fieldEmployee.setBounds(150, 140, 400, 40);
+        buttonSearch.setBounds(560, 140, 130, 40); 
+        employeeList.setBounds(150, 200, 400, 240);
+        buttonEdit.setBounds(560, 360, 130, 40); 
+        buttonDelete.setBounds(560, 400, 130, 40);
         
-        add(labelTitulo);
-        add(labelFuncionario);
-        add(campoFuncionario);
-        add(listaFuncionarios);
-        add(botaoPesquisar);
-        add(botaoEditar);
-        add(botaoExcluir);
+        add(labelTitle);
+        add(labelEmployee);
+        add(fieldEmployee);
+        add(employeeList);
+        add(buttonSearch);
+        add(buttonEdit);
+        add(buttonDelete);
         
         setVisible(true);
     }
 
-    private void criarEventos() {
-        botaoPesquisar.addActionListener(new ActionListener() {
+    private void createEvents() {
+        buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sqlPesquisarFuncionarios(campoFuncionario.getText());
+                searchEmployee(fieldEmployee.getText());
             }
         });
-        botaoEditar.addActionListener(new ActionListener() {
+        buttonEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navegador.funcionariosEditar(funcionarioAtual);
+                Navegador.employeesEdit(currentEmployee);
             }
         });
-        botaoExcluir.addActionListener(new ActionListener() {
+        buttonDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sqlDeletarFuncionario();
+                deleteEmployee();
             }
         });
-        listaFuncionarios.addListSelectionListener(new ListSelectionListener() {
+        employeeList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                funcionarioAtual = listaFuncionarios.getSelectedValue();
-                if(funcionarioAtual == null){
-                    botaoEditar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
+                currentEmployee = employeeList.getSelectedValue();
+                if(currentEmployee == null){
+                    buttonEdit.setEnabled(false);
+                    buttonDelete.setEnabled(false);
                 }else{
-                    botaoEditar.setEnabled(true);
-                    botaoExcluir.setEnabled(true);
+                    buttonEdit.setEnabled(true);
+                    buttonDelete.setEnabled(true);
                 }
             }
         });
     }
 
-    private void sqlPesquisarFuncionarios(String nome) {        
-        // conexão
-        Connection conexao;
-        // instrucao SQL
-        Statement instrucaoSQL;
-        // resultados
-        ResultSet resultados;
+    private void searchEmployee(String nome) {        
         
         try {
-            // conectando ao banco de dados
-            conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);
+        	ResultSet results = connected.executeQuery("SELECT * FROM funcionarios WHERE nome like '%"+nome+"%' order by nome ASC");
             
-            // criando a instrução SQL 
-           instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultados = instrucaoSQL.executeQuery("SELECT * FROM funcionarios WHERE nome like '%"+nome+"%' order by nome ASC");
-            
-            listasFuncionariosModelo.clear();
+            employeeListModel.clear();
 
-            while (resultados.next()) {                
-                Funcionario funcionario = new Funcionario();
-                funcionario.setId(resultados.getInt("id"));
-                funcionario.setNome(resultados.getString("nome"));
-                funcionario.setSobrenome(resultados.getString("sobrenome"));
-                funcionario.setDataNascimento(resultados.getString("data_nascimento"));
-                funcionario.setEmail(resultados.getString("email"));
-                if(resultados.getString("cargo") != null) funcionario.setCargo(Integer.parseInt(resultados.getString("cargo")));
-                funcionario.setSalario(Double.parseDouble(resultados.getString("salario")));
+            while (results.next()) {                
+                Funcionario employee = new Funcionario();
+                employee.setId(results.getInt("id"));
+                employee.setFirstName(results.getString("nome"));
+                employee.setLastName(results.getString("sobrenome"));
+                employee.setBirthDate(results.getString("data_nascimento"));
+                employee.setEmail(results.getString("email"));
+                if(results.getString("cargo") != null) employee.setOffice(Integer.parseInt(results.getString("cargo")));
+                employee.setSalary(Double.parseDouble(results.getString("salario")));
                 
-                listasFuncionariosModelo.addElement(funcionario);
+                employeeListModel.addElement(employee);
             }
             
         } catch (SQLException ex) {
-
-			System.out.print(ex);	
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar funcionï¿½rios.");
+            Logger.getLogger(FuncionariosInserir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void sqlDeletarFuncionario() {
-        String pergunta = "Deseja realmente excluir o Funcionario "+funcionarioAtual.getNome()+"?";
+    private void deleteEmployee() {
+        String pergunta = "Deseja realmente excluir o Funcionario "+currentEmployee.getFirstName()+"?";
         int confirmacao = JOptionPane.showConfirmDialog(null, pergunta, "Excluir", JOptionPane.YES_NO_OPTION);
         if(confirmacao == JOptionPane.YES_OPTION){
-            // conexão
-            Connection conexao;
-            // instrucao SQL
-            Statement instrucaoSQL;
-            // resultados
-            ResultSet resultados;
-
             try {
-                // conectando ao banco de dados
-                conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);
-
-                // criando a instrução SQL
-                instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                instrucaoSQL.executeUpdate("DELETE FROM funcionarios WHERE id="+funcionarioAtual.getId()+"");            
+            	int result = connected.executeUpdate("DELETE FROM funcionarios WHERE id="+currentEmployee.getId()+"");            
 
                 JOptionPane.showMessageDialog(null, "Funcionario deletado com sucesso!");
                 Navegador.inicio();
 
             } catch (SQLException ex) {
-
-    			System.out.print(ex);	
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao excluir Funcionario.");
+                Logger.getLogger(FuncionariosInserir.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }

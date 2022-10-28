@@ -5,20 +5,20 @@ import javax.swing.JPanel;
 import sistema.Navegador;
 
 public class Inicio extends JPanel{
-	JLabel labelTitulo;
+	JLabel labelTitle;
 
 	public Inicio() {
-		criarComponentes();
-		Navegador.habilitarMenu();
+		createComponents();
+		Navegador.enableMenu();
 	}
 	
-	private void criarComponentes() {
+	private void createComponents() {
 		setLayout(null);
 		
-		labelTitulo = new JLabel("Escolha uma opção no menu superior", JLabel.CENTER);
-		labelTitulo.setBounds(20, 100, 660, 40);
+		labelTitle = new JLabel("Escolha uma opção no menu superior", JLabel.CENTER);
+		labelTitle.setBounds(20, 100, 660, 40);
 		
-		add(labelTitulo);
+		add(labelTitle);
 		
 		setVisible(true);
 	}

@@ -1,14 +1,13 @@
 package entidade;
 
 public class Funcionario {
-	//dados funcionario
     private int id; 
-    private String nome; 
-    private String sobrenome; 
-    private String dataNascimento;
+    private String firstName; 
+    private String lastName; 
+    private String birthDate;
     private String email;
-    private int cargo; 
-    private double salario;
+    private int office; 
+    private double salary;
 
     public int getId() {
         return id;
@@ -18,28 +17,28 @@ public class Funcionario {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getDataNascimento() {
-        return dataNascimento;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getEmail() {
@@ -50,24 +49,20 @@ public class Funcionario {
         this.email = email;
     }
 
-    public int getCargo() {
-        return cargo;
+    public int getOffice() {
+        return office;
     }
 
-    public void setCargo(int cargo) {
-        this.cargo = cargo;
+    public void setOffice(int office) {
+        this.office = office;
     }
 
-    public double getSalario() {
-        return salario;
+    public double getSalary() {
+        return salary;
     }
 
-    public void setSalario(double salario) {
-        this.salario = salario;
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
-    
-    @Override
-    public String toString() {
-        return this.nome + " " + this.sobrenome;
-    }    
+  
 }

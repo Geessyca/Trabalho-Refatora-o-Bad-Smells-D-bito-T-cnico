@@ -19,140 +19,135 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import conectividade.Main;
 import sistema.Navegador;
-import sistema.BancoDeDados;
+import conectividade.Main;
+import sistema.Validador;
 import entidade.Cargo;
 
 public class CargosConsultar extends JPanel {
     
-    Cargo cargoAtual;
-    JLabel labelTitulo, labelCargo;
-    JTextField campoCargo;
-    JButton botaoPesquisar, botaoEditar, botaoExcluir;
-    DefaultListModel<Cargo> listasCargosModelo = new DefaultListModel();
-    JList<Cargo> listaCargos;
-            
+    Cargo currentOffice;
+    JLabel labelTitle, labelOffice;
+    JTextField fieldOffice;
+    JButton buttonSearch, buttonEdit, buttonDelete;
+    DefaultListModel<Cargo> officeListModel = new DefaultListModel();
+    JList<Cargo> officeList;
+	Main connected = new Main();
     public CargosConsultar(){
-        criarComponentes();
-        criarEventos();
-        Navegador.habilitarMenu();
+        createComponents();
+        createEvents();
+        Navegador.enableMenu();
     }
 
-    private void criarComponentes() {
+    private void createComponents() {
         setLayout(null);
         
-        labelTitulo = new JLabel("Consulta de Cargos", JLabel.CENTER);
-        labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.PLAIN, 20));      
-        labelCargo = new JLabel("Nome do cargo", JLabel.LEFT);
-        campoCargo = new JTextField();
-        botaoPesquisar = new JButton("Pesquisar Cargo");
-        botaoEditar = new JButton("Editar Cargo");
-        botaoEditar.setEnabled(false);
-        botaoExcluir = new JButton("Excluir Cargo");
-        botaoExcluir.setEnabled(false);
-        listasCargosModelo = new DefaultListModel();
-        listaCargos = new JList();
-        listaCargos.setModel(listasCargosModelo);
-        listaCargos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        labelTitle = new JLabel("Consulta de Cargos", JLabel.CENTER);
+        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.PLAIN, 20));      
+        labelOffice = new JLabel("Nome do office", JLabel.LEFT);
+        fieldOffice = new JTextField();
+        buttonSearch = new JButton("Pesquisar Cargo");
+        buttonEdit = new JButton("Editar Cargo");
+        buttonEdit.setEnabled(false);
+        buttonDelete = new JButton("Excluir Cargo");
+        buttonDelete.setEnabled(false);
+        officeListModel = new DefaultListModel();
+        officeList = new JList();
+        officeList.setModel(officeListModel);
+        officeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         
         
-        labelTitulo.setBounds(20, 20, 660, 40);
-        labelCargo.setBounds(100, 120, 400, 20);
-        campoCargo.setBounds(100, 140, 400, 40);
-        botaoPesquisar.setBounds(500, 140, 130, 40); 
-        listaCargos.setBounds(100, 200, 400, 240);
-        botaoEditar.setBounds(500, 360, 130, 40); 
-        botaoExcluir.setBounds(500, 400, 130, 40);
+        labelTitle.setBounds(20, 20, 660, 40);
+        labelOffice.setBounds(100, 120, 400, 20);
+        fieldOffice.setBounds(100, 140, 400, 40);
+        buttonSearch.setBounds(500, 140, 130, 40); 
+        officeList.setBounds(100, 200, 400, 240);
+        buttonEdit.setBounds(500, 360, 130, 40); 
+        buttonDelete.setBounds(500, 400, 130, 40);
         
-        add(labelTitulo);
-        add(labelCargo);
-        add(campoCargo);
-        add(listaCargos);
-        add(botaoPesquisar);
-        add(botaoEditar);
-        add(botaoExcluir);
+        add(labelTitle);
+        add(labelOffice);
+        add(fieldOffice);
+        add(officeList);
+        add(buttonSearch);
+        add(buttonEdit);
+        add(buttonDelete);
         
         setVisible(true);
     }
 
-    private void criarEventos() {
-        botaoPesquisar.addActionListener(new ActionListener() {
+    private void createEvents() {
+        buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sqlPesquisarCargos(campoCargo.getText());
+                searchOffice(fieldOffice.getText());
             }
         });
-        botaoEditar.addActionListener(new ActionListener() {
+        buttonEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Navegador.cargosEditar(cargoAtual);
+               Navegador.officesEdit(currentOffice);
             }
         });
-        botaoExcluir.addActionListener(new ActionListener() {
+        buttonDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sqlDeletarCargo();
+                deleteOffice();
             }
         });
-        listaCargos.addListSelectionListener(new ListSelectionListener() {
+        officeList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                cargoAtual = listaCargos.getSelectedValue();
-                if(cargoAtual == null){
-                    botaoEditar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
+                currentOffice = officeList.getSelectedValue();
+                if(currentOffice == null){
+                    buttonEdit.setEnabled(false);
+                    buttonDelete.setEnabled(false);
                 }else{
-                    botaoEditar.setEnabled(true);
-                    botaoExcluir.setEnabled(true);
+                    buttonEdit.setEnabled(true);
+                    buttonDelete.setEnabled(true);
                 }
             }
         });
     }
 
-    private void sqlPesquisarCargos(String nome_cargo) {
-        Connection conexao;
-        Statement instrucaoSQL;
-        ResultSet resultados;
+    private void searchOffice(String nome_cargo) {
         
         try {
-            conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);             
-            instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultados = instrucaoSQL.executeQuery("SELECT * FROM cargos WHERE nome_cargo like '%"+nome_cargo+"%'");
+        	ResultSet results = connected.executeQuery("SELECT * FROM offices WHERE nome_cargo like '%"+nome_cargo+"%'");
             
-            listasCargosModelo.clear();
+            officeListModel.clear();
 
-            while (resultados.next()) {                
-                Cargo cargo = new Cargo();
-                cargo.setId(resultados.getInt("id"));
-                cargo.setNome(resultados.getString("nome_cargo"));
+            while (results.next()) {                
+                Cargo office = new Cargo();
+                office.setId(results.getInt("id"));
+                office.setName(results.getString("nome_cargo"));
                 
-                listasCargosModelo.addElement(cargo);
+                officeListModel.addElement(office);
             }
             
         } catch (SQLException ex) {
-
-			System.out.print(ex);	
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar os Cargos.");
+            Logger.getLogger(CargosInserir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void sqlDeletarCargo() {
+    private void deleteOffice() {
         
-        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o Cargo "+cargoAtual.getNome()+"?", "Excluir", JOptionPane.YES_NO_OPTION);
+        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o Cargo "+currentOffice.getName()+"?", "Excluir", JOptionPane.YES_NO_OPTION);
         if(confirmacao == JOptionPane.YES_OPTION){
-            Connection conexao;
-            Statement instrucaoSQL;
-            ResultSet resultados;
+
             
             try {
-                conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);
-                instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                instrucaoSQL.executeUpdate("DELETE FROM cargos WHERE id="+cargoAtual.getId()+"");
-                listaCargos.clearSelection();
+            	int result = connected.executeUpdate("DELETE FROM cargos WHERE id="+currentOffice.getId()+"");
+                officeList.clearSelection();
                 JOptionPane.showMessageDialog(null, "Cargo deletado com sucesso!");  
                 
             }catch(SQLException ex){
-
-    			System.out.print(ex);	
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao excluir o Cargo.");
+                Logger.getLogger(CargosInserir.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
         
