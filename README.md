@@ -306,4 +306,10 @@ public class Funcionario {
 
 ```
 
+<div class="tags" id=”BancoDeDados”><strong>/sistema/BancoDeDados.java: </strong>
+				<span ng-repeat="tag in tags">
+            <a href=""><code class="btn btn-primary btn-xs">Código não refatorado</code></a></span>
+  			</div>
+
+Como passamos realizar o banco de dados centralizados na função <a href=”#conn”>/conectividade/Main.java</a> essa classe foi removida
 
