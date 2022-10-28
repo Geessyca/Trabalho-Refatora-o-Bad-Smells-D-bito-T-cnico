@@ -84,7 +84,40 @@ public static ResultSet executeQuery(String query){
 
 ```
 
-Foi observado nas classes <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosEditar”>telas/CargosEditar.java</a>, <a href=”#CargosInserir”>telas/CargosInserir.java</a>, <a href=”#FuncionariosConsultar”>telas/FuncionariosConsultar.java</a>,<a href=”#FuncionariosEditar”>telas/FuncionariosEditar.java</a>,<a href=”#FuncionariosInserir”>telas/FuncionariosInserir.java</a>, havia duplicidade na conexão com o banco de dados, por isso o método anterior foi necessário.
+Foi observado nas classes <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosEditar”>telas/CargosEditar.java</a>, <a href=”#CargosInserir”>telas/CargosInserir.java</a>, <a href=”#FuncionariosConsultar”>telas/FuncionariosConsultar.java</a>,<a href=”#FuncionariosEditar”>telas/FuncionariosEditar.java</a>,<a href=”#FuncionariosInserir”>telas/FuncionariosInserir.java</a>, havia duplicidade na conexão com o banco de dados, por isso o método anterior foi necessário, assim como os seguintes:
+
+```
+	public static int executeUpdate(String template) throws SQLException{
+		Connection connection = connected();
+		Statement statement = null;
+		int result = 0;
+		
+		try{
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			result = statement.executeUpdate(template);
+			
+		} catch(SQLException erro){
+			System.out.println(erro.getMessage());
+		}	
+		connection.close();
+		return result;
+	}
+	
+	public static PreparedStatement prepareStatement(String template) throws SQLException{
+		Connection connection = connected();
+		
+		PreparedStatement statement = null;
+		
+		try{
+			statement = connection.prepareStatement(template);
+			
+		} catch(SQLException erro){
+			System.out.println(erro.getMessage());
+		}	
+		connection.close();
+		return statement;
+	}
+```
 
 <div class="tags" id=”Cargo”><strong>/entidade/Cargo.java: </strong>
 				<span ng-repeat="tag in tags">
