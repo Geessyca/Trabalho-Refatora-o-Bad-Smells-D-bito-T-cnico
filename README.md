@@ -1,7 +1,7 @@
 <h1 align="center">
   🎓<br>Trabalho Refatoração | Bad Smells | Débito Técnico
 </h1>
-<div class="tags" id=”conn”><strong>/conectividade/Main.java</strong></div>
+<div class="tags" id="conn"><strong>/conectividade/Main.java</strong></div>
 
 Essa classe tem como função testar a conectividade com o banco de dados local. Ela possuía variáveis globais não inicializadas em sua declaração e mutáveis e toda a nomenclatura da classe era simplória, além da sua função não ser necessária/utilizada no sistema.
 
@@ -79,7 +79,7 @@ public static ResultSet executeQuery(String query){
 
 ```
 
-Foi observado nas classes <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosConsultar”>telas/CargosConsultar.java</a>, <a href=”#CargosEditar”>telas/CargosEditar.java</a>, <a href=”#CargosInserir”>telas/CargosInserir.java</a>, <a href=”#FuncionariosConsultar”>telas/FuncionariosConsultar.java</a>,<a href=”#FuncionariosEditar”>telas/FuncionariosEditar.java</a>,<a href=”#FuncionariosInserir”>telas/FuncionariosInserir.java</a>, havia duplicidade na conexão com o banco de dados, por isso o método anterior foi necessário, assim como os seguintes:
+Foi observado nas classes <a href="#CargosConsultar">telas/CargosConsultar.java</a>, <a href="#CargosConsultar">telas/CargosConsultar.java</a>, <a href="#CargosEditar">telas/CargosEditar.java</a>, <a href="#CargosInserir">telas/CargosInserir.java</a>, <a href="#FuncionariosConsultar">telas/FuncionariosConsultar.java</a>,<a href="#FuncionariosEditar">telas/FuncionariosEditar.java</a>,<a href="#FuncionariosInserir">telas/FuncionariosInserir.java</a>, havia duplicidade na conexão com o banco de dados, por isso o método anterior foi necessário, assim como os seguintes:
 
 ```
 	public static int executeUpdate(String template) throws SQLException{
@@ -114,7 +114,7 @@ Foi observado nas classes <a href=”#CargosConsultar”>telas/CargosConsultar.j
 	}
 ```
 
-<div class="tags" id=”Cargo”><strong>/entidade/Cargo.java</strong></div>
+<div class="tags" id="Cargo"><strong>/entidade/Cargo.java</strong></div>
 
 A refatoração dessa classe foi bem simples, ela contou com três pontos somente, a renomeação da nomenclatura, a remoção dos comentários presentes e a remoção da toString() que em nenhum momento era utilizada.
 
@@ -175,7 +175,7 @@ public class Cargo {
 }
 
 ```
-<div class="tags" id=”Funcionario”><strong>/entidade/Funcionario.java</strong></div>
+<div class="tags" id="Funcionario"><strong>/entidade/Funcionario.java</strong></div>
 
 Assim como a refatoração da classe anterior, a renomeação da nomenclatura, a remoção dos comentários presentes e a remoção da toString() que em nenhum momento era utilizada.
 
@@ -324,11 +324,11 @@ public class Funcionario {
 
 ```
 
-<div class="tags" id=”BancoDeDados”><strong>/sistema/BancoDeDados.java</strong></div>
+<div class="tags" id="BancoDeDados"><strong>/sistema/BancoDeDados.java</strong></div>
 
-Como passamos realizar o banco de dados centralizados na função <a href=”#conn”>/conectividade/Main.java</a> essa classe foi removida
+Como passamos realizar o banco de dados centralizados na função <a href="#conn">/conectividade/Main.java</a> essa classe foi removida
 
-<div class="tags" id=”Validacao”><strong>/sistema/Validador.java</strong></div>
+<div class="tags" id="Validacao"><strong>/sistema/Validador.java</strong></div>
 
 Como debito tecnico identifiquei a falta de validação em campos criticos do formulario, então foi criado uma classe para tal prezando a não duplicidade
 
@@ -370,10 +370,10 @@ public class Validador {
 
 
 ```
-<div class="tags" id=”Navegador”><strong>/sistema/Navegador.java</strong></div>
+<div class="tags" id="Navegador"><strong>/sistema/Navegador.java</strong></div>
 
 
-Na classe Navegador há um feature Envy da classe <a href=”Sistema”>Sistema</a> o Sistema.tela, ele foi excluído da classe Sistema e adicionado na classe Navegador
+Na classe Navegador há um feature Envy da classe <a href="Sistema">Sistema</a> o Sistema.tela, ele foi excluído da classe Sistema e adicionado na classe Navegador
 
 ```
 	Sistema.tela  = new Login();
@@ -724,10 +724,10 @@ public class Navegador {
 
 
 ```
-<div class="tags" id=”Sistema”><strong>/sistema/Sistema.java</strong></div>
+<div class="tags" id="Sistema"><strong>/sistema/Sistema.java</strong></div>
 
 
-O JPanel tela, ele foi extraido da classe Sistema e adicionado na classe <a href=”#Navegador”>Navegador</a> e nomedo a classe criarComponentes()
+O JPanel tela, ele foi extraido da classe Sistema e adicionado na classe <a href="#Navegador">Navegador</a> e nomedo a classe criarComponentes()
 
 ```
 	public class Sistema {
@@ -776,9 +776,9 @@ public class Sistema {
 
 ```
 
-Nas classes a seguir inicialmente foi refatorado toda a nomeclatura da classe, a pois isso foi removido a duplicação da <a href=”#conn”>conexão no banco</a>
+Nas classes a seguir inicialmente foi refatorado toda a nomeclatura da classe, a pois isso foi removido a duplicação da <a href="#conn">conexão no banco</a>
 
-<div class="tags" id=”CargosConsultar”><strong>/telas/CargosConsultar.java: </strong> </div>
+<div class="tags" id="CargosConsultar"><strong>/telas/CargosConsultar.java: </strong> </div>
 
 
 
@@ -1055,7 +1055,7 @@ public class CargosConsultar extends JPanel {
 
 ```
 
-<div class="tags" id=”CargosEditar ”><strong>/telas/CargosEditar .java: </strong> </div>
+<div class="tags" id="CargosEditar "><strong>/telas/CargosEditar .java: </strong> </div>
 
 ```
 public class CargosEditar extends JPanel {
@@ -1197,7 +1197,7 @@ public class CargosEditar extends JPanel {
 
 ```
 
-<div class="tags" id=”CargosInserir ”><strong>/telas/CargosInserir .java: </strong> </div>
+<div class="tags" id="CargosInserir "><strong>/telas/CargosInserir .java: </strong> </div>
 
 ```
 public class CargosInserir extends JPanel {
@@ -1337,9 +1337,9 @@ private void insertOffice(Cargo novoCargo) {
 
 ```
 
-Para as classes a seguir foi refatorado a nomeclatura das variaveis, remoção do comentário e  a duplicação da <a href=”#conn”>conexão no banco</a>
+Para as classes a seguir foi refatorado a nomeclatura das variaveis, remoção do comentário e  a duplicação da <a href="#conn">conexão no banco</a>
 
-<div class="tags" id=”FuncionariosConsultar ”><strong>/telas/FuncionariosConsultar .java: </strong> </div>
+<div class="tags" id="FuncionariosConsultar "><strong>/telas/FuncionariosConsultar .java: </strong> </div>
 
 ```
 public class FuncionariosConsultar extends JPanel {
@@ -1632,7 +1632,7 @@ public class FuncionariosConsultar extends JPanel {
 
 ```
 
-<div class="tags" id=”FuncionariosEditar ”><strong>/telas/FuncionariosEditar .java: </strong> </div>
+<div class="tags" id="FuncionariosEditar "><strong>/telas/FuncionariosEditar .java: </strong> </div>
 
 ```
 public class FuncionariosEditar extends JPanel {
@@ -1971,7 +1971,7 @@ public class FuncionariosEditar extends JPanel {
 
 ```
 
-<div class="tags" id=”FuncionariosInserir ”><strong>/telas/FuncionariosInserir .java: </strong> </div>
+<div class="tags" id="FuncionariosInserir "><strong>/telas/FuncionariosInserir .java: </strong> </div>
 
 ```
 
@@ -1981,7 +1981,7 @@ public class FuncionariosEditar extends JPanel {
 
 ```
 
-<div class="tags" id=”FuncionariosInserir ”><strong>/telas/FuncionariosInserir .java: </strong> </div>
+<div class="tags" id="FuncionariosInserir "><strong>/telas/FuncionariosInserir .java: </strong> </div>
 
 ```
 public class FuncionariosInserir extends JPanel {
@@ -2297,7 +2297,7 @@ public class FuncionariosInserir extends JPanel {
 
 ```
 
-<div class="tags" id=”Inicio”><strong>/telas/Inicio.java: </strong> </div>
+<div class="tags" id="Inicio"><strong>/telas/Inicio.java: </strong> </div>
 
 Foi removido a classe createEvents() que não era utilizada e renomeada toda a nomeclatura da classe 
 
@@ -2352,7 +2352,7 @@ public class Inicio extends JPanel{
 
 
 ```
-<div class="tags" id=”Login”><strong>/telas/Login.java: </strong> </div>
+<div class="tags" id="Login"><strong>/telas/Login.java: </strong> </div>
 
 Foi renomeada toda a nomeclatura da classe e criado uma permissão para o login que era um debito tecnico já que no antigo codigo não era validado o mesmo
 
