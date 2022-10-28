@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+
 import entidade.Cargo;
 import sistema.telas.CargosEditar;
 import sistema.telas.CargosConsultar;
@@ -17,146 +19,145 @@ import sistema.telas.Inicio;
 import sistema.telas.Login;
 
 public class Navegador {
-	private static boolean menuConstruido;
-	private static boolean menuHabilitado;
+	public static JPanel screen;
+
+	private static boolean menuBuilt;
+	private static boolean menuAble;
 	private static JMenuBar menuBar;
-	private static JMenu menuArquivo, menuFuncionarios, menuCargos;
-	private static JMenuItem miSair, miFuncionariosConsultar, miFuncionariosCadastrar, miCargosConsultar;
-	private static JMenuItem miCargosCadastrar;
+	private static JMenu menuFile, menuEmployees, menuOffice;
+	private static JMenuItem menuInternExit, menuInternEmployeessConsult, menuInternEmployeessRegister, menuInternOfficeConsult;
+	private static JMenuItem menuInternOfficeRegister;
+	
+	private static void infoPageDefault(String title) {
+		Sistema.frame.setTitle("Funcionários OOP Company - "+title);
+		Navegador.uptadeScreen();	
+	}
 	
 	public static void login() {
-		Sistema.tela = new Login();
-		Sistema.frame.setTitle("Funcionários OOP Company");
-		Navegador.atualizarTela();	
+		screen = new Login();
+		infoPageDefault("Login");
 	}
 	
 	public static void inicio() {
-		Sistema.tela = new Inicio();
-		Sistema.frame.setTitle("Funcionários OOP Company");
-		Navegador.atualizarTela();
+		screen = new Inicio();
+		infoPageDefault("Inicio");
 	}
 	
-	public static void cargosCadastrar() {
-		Sistema.tela = new CargosInserir();
-		Sistema.frame.setTitle("Funcionários OOP Company - Cadastrar Cargos");
-		Navegador.atualizarTela();		
+	public static void officesRegister() {
+		screen = new CargosInserir();
+		infoPageDefault("Register Cargos");		
 	}
 	
-	public static void cargosConsultar() {
-		Sistema.tela = new CargosConsultar();
-		Sistema.frame.setTitle("Funcionários OOP Company - Consultar Cargos");
-		Navegador.atualizarTela();	
+	public static void officesConsult() {
+		screen = new CargosConsultar();
+		infoPageDefault("Consult Cargos");
 	}
 	
-	public static void cargosEditar(Cargo cargo) {
-		Sistema.tela = new CargosEditar(cargo);
-		Sistema.frame.setTitle("Funcionários OOP Company - Editar Cargos");
-		Navegador.atualizarTela();
+	public static void officesEdit(Cargo office) {
+		screen = new CargosEditar(office);
+		infoPageDefault("Editar Cargos");
 	}
 	
-	 public static void funcionariosCadastrar(){
-		 Sistema.tela = new FuncionariosInserir();
-	     Sistema.frame.setTitle("Funcionarios OOP Company - Cadastrar funcionários");
-	     Navegador.atualizarTela();
+	 public static void employeesRegister(){
+		 screen = new FuncionariosInserir();
+	 	infoPageDefault("Register funcionarios");
 	 }
 	    
-	 public static void funcionariosConsultar(){
-	     Sistema.tela = new FuncionariosConsultar();
-	     Sistema.frame.setTitle("Funcionarios OOP Company - Consultar funcionários");
-	     Navegador.atualizarTela();
+	 public static void employeesConsult(){
+	     screen = new FuncionariosConsultar();
+	 	infoPageDefault("Consult funcionarios");
 	 }
 
-	 public static void funcionariosEditar(Funcionario funcionario){
-	     Sistema.tela = new FuncionariosEditar(funcionario);  
-	     Sistema.frame.setTitle("Funcionários OOP Company - Editar funcionários");           
-	     Navegador.atualizarTela();
+	 public static void employeesEdit(Funcionario employee){
+	     screen = new FuncionariosEditar(employee);         
+	 	infoPageDefault("Editar funcionarios");
 	    }
 	 
 	
-	private static void atualizarTela() {
+	private static void uptadeScreen() {
 		Sistema.frame.getContentPane().removeAll();
-		Sistema.tela.setVisible(true);
-		Sistema.frame.add(Sistema.tela);
+		screen.setVisible(true);
+		Sistema.frame.add(screen);
 		Sistema.frame.setVisible(true);
 	}
 	
-	private static void construirMenu() {
-		if(!menuConstruido) {
-			menuConstruido = true;
+	private static void buildMenu() {
+		if(!menuBuilt) {
+			menuBuilt = true;
 			
 			menuBar = new JMenuBar();
 			
-			menuArquivo = new JMenu("Arquivo");
-			menuBar.add(menuArquivo);
-			miSair = new JMenuItem("Sair");
-			menuArquivo.add(miSair);
+			menuFile = new JMenu("Arquivo");
+			menuBar.add(menuFile);
+			menuInternExit = new JMenuItem("Sair");
+			menuFile.add(menuInternExit);
 			
-			menuFuncionarios = new JMenu ("Funcionários");
-			menuBar.add(menuFuncionarios);
-			miFuncionariosCadastrar = new JMenuItem("Cadastrar");
-			menuFuncionarios.add(miFuncionariosCadastrar);
-			miFuncionariosConsultar = new JMenuItem("Consultar");
-			menuFuncionarios.add(miFuncionariosConsultar);
+			menuEmployees = new JMenu ("Funcionários");
+			menuBar.add(menuEmployees);
+			menuInternEmployeessRegister = new JMenuItem("Cadastro");
+			menuEmployees.add(menuInternEmployeessRegister);
+			menuInternEmployeessConsult = new JMenuItem("Consulta");
+			menuEmployees.add(menuInternEmployeessConsult);
 			
-			menuCargos = new JMenu("Cargos");
-			menuBar.add(menuCargos);
-			miCargosCadastrar = new JMenuItem("Cadastrar");
-			menuCargos.add(miCargosCadastrar);
-			miCargosConsultar = new JMenuItem("Consultar");
-			menuCargos.add(miCargosConsultar);
+			menuOffice = new JMenu("Cargos");
+			menuBar.add(menuOffice);
+			menuInternOfficeRegister = new JMenuItem("Cadastro");
+			menuOffice.add(menuInternOfficeRegister);
+			menuInternOfficeConsult = new JMenuItem("Consulta");
+			menuOffice.add(menuInternOfficeConsult);
 			
-			criarEventosMenu();
+			createEventsMenu();
 		}
 	}
 	
-	public static void habilitarMenu() {
-		if(!menuConstruido) construirMenu();
-		if(!menuHabilitado) {
-			menuHabilitado = true;
+	public static void enableMenu() {
+		if(!menuBuilt) buildMenu();
+		if(!menuAble) {
+			menuAble = true;
 			Sistema.frame.setJMenuBar(menuBar);
 		}
 	}
 	
-	public static void desabilitarMenu() {
-		if(menuHabilitado) {
-			menuHabilitado = false;
+	public static void disableMenu() {
+		if(menuAble) {
+			menuAble = false;
 			Sistema.frame.setJMenuBar(null);
 		}
 	}
 	
-	private static void criarEventosMenu() {
-		miSair.addActionListener(new ActionListener() {
+	private static void createEventsMenu() {
+		menuInternExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
 		
-		miFuncionariosCadastrar.addActionListener(new ActionListener() {
+		menuInternEmployeessRegister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				funcionariosCadastrar();
+				employeesRegister();
 			}
 		});
-		miFuncionariosConsultar.addActionListener(new ActionListener() {
+		menuInternEmployeessConsult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				funcionariosConsultar();
+				employeesConsult();
 			
 			}
 		});
 		
-		miCargosCadastrar.addActionListener(new ActionListener() {
+		menuInternOfficeRegister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cargosCadastrar();
+				officesRegister();
 			}
 		});
 		
-		miCargosConsultar.addActionListener(new ActionListener() {
+		menuInternOfficeConsult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cargosConsultar();
+				officesConsult();
 			}
 		});
 		

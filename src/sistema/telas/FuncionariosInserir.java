@@ -25,162 +25,159 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import sistema.BancoDeDados;
+
+import conectividade.Main;
 import sistema.Navegador;
+import sistema.Validador;
 import entidade.Cargo;
 import entidade.Funcionario;
 
 public class FuncionariosInserir extends JPanel {
 	
-	JLabel labelTitulo, labelNome, labelSobrenome, labelDataNascimento, labelEmail, labelCargo, labelSalario;
-	JTextField campoNome, campoSobrenome, campoEmail;
-	JFormattedTextField campoDataNascimento, campoSalario;
-	JComboBox<Cargo> comboBoxCargo;
-	JButton botaoGravar;
+	JLabel labelTitle, labelName, labelLastName, labelBirthDate, labelEmail, labelOffice, labelSalary;
+	JTextField fieldFirstName, fieldLastName, fieldEmail;
+	JFormattedTextField fieldBirthDate, fieldSalary;
+	JComboBox<Cargo> boxWithOffice;
+	JButton buttonSubmit;
 	MaskFormatter mkSalario;
-	
+	Main connected = new Main();
 	public FuncionariosInserir() {
-		criarComponentes();
-		criarEventos();
-		Navegador.habilitarMenu();
+		createComponents();
+		createEvents();
+		Navegador.enableMenu();
 	}
 	
 	
-	private void criarComponentes() {
+	private void createComponents() {
 		setLayout(null);
 		
-		labelTitulo =  new JLabel("Cadastro de Funcionario", JLabel.CENTER);
-		labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.PLAIN, 20));
-		labelNome =  new JLabel("Nome:", JLabel.LEFT);
-		campoNome = new JTextField();
-		labelSobrenome = new  JLabel("Sobrenome:", JLabel.LEFT);
-		campoSobrenome = new JTextField();
-		labelDataNascimento = new JLabel("Data de Nascimento", JLabel.LEFT);
-		campoDataNascimento = new JFormattedTextField();
+		labelTitle =  new JLabel("Cadastro de Funcionario", JLabel.CENTER);
+		labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.PLAIN, 20));
+		labelName =  new JLabel("Nome:", JLabel.LEFT);
+		fieldFirstName = new JTextField();
+		labelLastName = new  JLabel("Sobrenome:", JLabel.LEFT);
+		fieldLastName = new JTextField();
+		labelBirthDate = new JLabel("Data de Nascimento", JLabel.LEFT);
+		fieldBirthDate = new JFormattedTextField();
 		try {
 			MaskFormatter dateMask= new MaskFormatter("##/##/####");
-			dateMask.install(campoDataNascimento);
+			dateMask.install(fieldBirthDate);
 		}catch (ParseException ex) {
 			Logger.getLogger(FuncionariosInserir.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		labelEmail = new JLabel("E-mail:", JLabel.LEFT);
-		campoEmail = new JTextField();
-		labelCargo = new JLabel("Cargo:", JLabel.LEFT);
-		comboBoxCargo = new JComboBox();
-		labelSalario = new JLabel("Salário", JLabel.LEFT);
+		fieldEmail = new JTextField();
+		labelOffice = new JLabel("Cargo:", JLabel.LEFT);
+		boxWithOffice = new JComboBox();
+		labelSalary = new JLabel("Salï¿½rio", JLabel.LEFT);
 		DecimalFormat formatter = new DecimalFormat("###0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
-		campoSalario = new JFormattedTextField(formatter);
-		campoSalario.setValue(0.00);
-		botaoGravar = new JButton("Adicionar");
+		fieldSalary = new JFormattedTextField(formatter);
+		fieldSalary.setValue(0.00);
+		buttonSubmit = new JButton("Adicionar");
 		
-		labelTitulo.setBounds(20, 20, 660, 40);
-		labelNome.setBounds(150, 80, 400, 20);
-		campoNome.setBounds(150, 100, 400, 40);
-		labelSobrenome.setBounds(150, 140, 400, 20);
-		campoSobrenome.setBounds(150, 160, 400, 40);
-		labelDataNascimento.setBounds(150, 200, 400, 20);
-		campoDataNascimento.setBounds(150, 220, 400, 40);
+		labelTitle.setBounds(20, 20, 660, 40);
+		labelName.setBounds(150, 80, 400, 20);
+		fieldFirstName.setBounds(150, 100, 400, 40);
+		labelLastName.setBounds(150, 140, 400, 20);
+		fieldLastName.setBounds(150, 160, 400, 40);
+		labelBirthDate.setBounds(150, 200, 400, 20);
+		fieldBirthDate.setBounds(150, 220, 400, 40);
 		labelEmail.setBounds(150,260, 400, 20);
-		campoEmail.setBounds(150,280, 400, 40);
-		labelCargo.setBounds(150, 320, 400, 20);
-		comboBoxCargo.setBounds(150, 340, 400, 40);
-		labelSalario.setBounds(150, 380, 400, 20);
-		campoSalario.setBounds(150, 400, 400, 40);
-		botaoGravar.setBounds(560, 400, 130, 40);
+		fieldEmail.setBounds(150,280, 400, 40);
+		labelOffice.setBounds(150, 320, 400, 20);
+		boxWithOffice.setBounds(150, 340, 400, 40);
+		labelSalary.setBounds(150, 380, 400, 20);
+		fieldSalary.setBounds(150, 400, 400, 40);
+		buttonSubmit.setBounds(560, 400, 130, 40);
 		
-		add(labelTitulo);
-		add(labelNome);
-		add(campoNome);
-		add(labelSobrenome);
-		add(campoSobrenome);
-		add(labelDataNascimento);
-		add(campoDataNascimento);
+		add(labelTitle);
+		add(labelName);
+		add(fieldFirstName);
+		add(labelLastName);
+		add(fieldLastName);
+		add(labelBirthDate);
+		add(fieldBirthDate);
 		add(labelEmail);
-		add(campoEmail);
-		add(labelCargo);
-		add(comboBoxCargo);
-		add(labelSalario);
-		add(campoSalario);
-		add(botaoGravar);
+		add(fieldEmail);
+		add(labelOffice);
+		add(boxWithOffice);
+		add(labelSalary);
+		add(fieldSalary);
+		add(buttonSubmit);
 		
-		sqlCarregarFuncionario();
+		loadEmployee();
 		
 		setVisible(true);
 	}
 	
-	private void criarEventos() {
-		botaoGravar.addActionListener(new ActionListener() {
+	private void createEvents() {
+		buttonSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcionario novoFuncionario = new Funcionario();
-				novoFuncionario.setNome(campoNome.getText());
-				novoFuncionario.setSobrenome(campoSobrenome.getText());
-				novoFuncionario.setDataNascimento(campoDataNascimento.getText());
-				novoFuncionario.setEmail(campoEmail.getText());
-				Cargo cargoSelecionado = (Cargo) comboBoxCargo.getSelectedItem();
-				if(cargoSelecionado != null) novoFuncionario.setCargo(cargoSelecionado.getId());
+				novoFuncionario.setFirstName(fieldFirstName.getText());
+				novoFuncionario.setLastName(fieldLastName.getText());
+				novoFuncionario.setBirthDate(fieldBirthDate.getText());
+				novoFuncionario.setEmail(fieldEmail.getText());
+				Cargo officeSelecionado = (Cargo) boxWithOffice.getSelectedItem();
+				if(officeSelecionado != null) novoFuncionario.setOffice(officeSelecionado.getId());
 				
-				novoFuncionario.setSalario(Double.valueOf(campoSalario.getText().replace(",", ".")));
-				sqlInserirFuncionario(novoFuncionario);
+				novoFuncionario.setSalary(Double.valueOf(fieldSalary.getText().replace(",", ".")));
+				insertEmployee(novoFuncionario);
 				}
 		});
 	}
 	
-	private void sqlCarregarFuncionario() {
+	private void loadEmployee() {
 		
-		Connection conexao;
-		Statement instrucaoSQL;
-		ResultSet resultados;
 		
 		try {
-			conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);
-			instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			resultados = instrucaoSQL.executeQuery("SELECT * from cargos order by nome_cargo asc");
-			comboBoxCargo.removeAll();
+			ResultSet results = connected.executeQuery("SELECT * from cargos order by nome_cargo asc");
+			boxWithOffice.removeAll();
 			
-			while (resultados.next()) {
-				Cargo cargo = new Cargo();
-				cargo.setId(resultados.getInt("id"));
-				cargo.setNome(resultados.getString("nome_cargo"));
-				comboBoxCargo.addItem(cargo);
+			while (results.next()) {
+				Cargo office = new Cargo();
+				office.setId(results.getInt("id"));
+				office.setName(results.getString("nome_cargo"));
+				boxWithOffice.addItem(office);
 			}
-			comboBoxCargo.updateUI();
+			boxWithOffice.updateUI();
 			
-			conexao.close();
 		} catch (SQLException ex) {
-			System.out.print(ex);	
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro ao carregar os cargos");
+			Logger.getLogger(FuncionariosInserir.class.getName()).log(Level.SEVERE, null, ex);	
 		}
 	}
 	
-	private void sqlInserirFuncionario(Funcionario novoFuncionario) {
-		
-        Connection conexao;
-        PreparedStatement instrucaoSQL;
+	private void insertEmployee(Funcionario novoFuncionario) {
+		Validador validate = new Validador();
+		validate.fullName(fieldFirstName.getText(), fieldLastName.getText());
+		validate.salary(fieldSalary.getText());
+		validate.email(fieldEmail.getText());
         
-        try{
-            conexao = DriverManager.getConnection(BancoDeDados.stringDeConexao, BancoDeDados.usuario, BancoDeDados.senha);
-            
-            String template = "INSERT INTO funcionarios (nome,sobrenome,data_nascimento,email,cargo,salario) VALUES (?,?,?,?,?,?)";
-            instrucaoSQL = conexao.prepareStatement(template);
-            instrucaoSQL.setString(1, novoFuncionario.getNome());
-            instrucaoSQL.setString(2, novoFuncionario.getSobrenome());
-            instrucaoSQL.setString(3, novoFuncionario.getDataNascimento());
-            instrucaoSQL.setString(4, novoFuncionario.getEmail());
-            if(novoFuncionario.getCargo() > 0){
-                instrucaoSQL.setInt(5, novoFuncionario.getCargo());
+        try{  
+
+            PreparedStatement preparedStatement = connected.prepareStatement("INSERT INTO funcionarios (nome,sobrenome,data_nascimento,email,cargo,salario) VALUES (?,?,?,?,?,?)");
+            preparedStatement.setString(1, novoFuncionario.getFirstName());
+            preparedStatement.setString(2, novoFuncionario.getLastName());
+            preparedStatement.setString(3, novoFuncionario.getBirthDate());
+            preparedStatement.setString(4, novoFuncionario.getEmail());
+            if(novoFuncionario.getOffice() > 0){
+                preparedStatement.setInt(5, novoFuncionario.getOffice());
             }else{
-                instrucaoSQL.setNull(5, java.sql.Types.INTEGER);
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
             }
-            instrucaoSQL.setString(6, Double.toString(novoFuncionario.getSalario()));
-            instrucaoSQL.executeUpdate();
+            preparedStatement.setString(6, Double.toString(novoFuncionario.getSalary()));
+            preparedStatement.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Funcionário adicionado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Funcionario adicionado com sucesso!");
             Navegador.inicio();
             
-            conexao.close();
         
         } catch(SQLException ex){
-			System.out.print(ex);	
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adicionar o Funcionario.");
+            Logger.getLogger(FuncionariosInserir.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }
 
