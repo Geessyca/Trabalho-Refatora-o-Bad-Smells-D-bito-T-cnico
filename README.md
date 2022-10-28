@@ -2477,3 +2477,35 @@ public class Login extends JPanel {
 
 
 ```
+E por fim, esses são os links com os codigos separados por não refatorado e refatorado. Por fim o refatorado final onde foi realizado a refatoração de todos os nomes das classes e pastas do sistema.
+
+<div class="tags">
+<strong>Repositorios: </strong>
+<span ng-repeat="tag in tags">
+            <a href="https://github.com/Geessyca/Trabalho-Refatora-o-Bad-Smells-D-bito-T-cnico/tree/code-before-refactoring">
+<code class="btn btn-primary btn-xs">Código não refatorado</code>
+</a>
+</span>
+<span ng-repeat="tag in tags">
+            <a href="https://github.com/Geessyca/Trabalho-Refatora-o-Bad-Smells-D-bito-T-cnico/tree/code-after-refactoring/src">
+<code class="btn btn-primary btn-xs">Código refatorado</code>
+</a>
+</span>
+<span ng-repeat="tag in tags">
+            <a href="https://github.com/Geessyca/Trabalho-Refatora-o-Bad-Smells-D-bito-T-cnico/tree/class-refactoring-code/src">
+<code class="btn btn-primary btn-xs">Código refatorado - final</code>
+</a>
+</span>
+
+</div>
+<div class="tags" >
+<strong>As mudanças podem ser também comparadas a partir do</strong>
+<span ng-repeat="tag in tags">
+            <a href="https://github.com/Geessyca/Trabalho-Refatora-o-Bad-Smells-D-bito-T-cnico/pull/1/files">
+<code class="btn btn-primary btn-xs">Pull Request</code>
+</a>
+</span>
+</div>
+
+
+
